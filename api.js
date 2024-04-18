@@ -84,6 +84,26 @@ app.put('/tasks/:id/status/:status',(req,res)=>{
 })
 
 
+//rotas para excluir uma task
+//método delete
+app.delete('/tasks/:id/delete',(req,res)=>{
+    const id = req.params.id;
+    connection.query('DELETE FROM tasks WHERE id = ?',[id],(err,rows)=>{
+        if(!err){
+            if(rows.affectedRows>0){
+                res.json(functions.response('Sucesso','Task deletada!',rows.affectedRows,null))
+            }else{
+                res.json(functions.response('Atenção','Task não encontrada!',rows.affectedRows,0,null))
+            }
+        }else{
+            res.json(functions.response('Erro',err.message,rows.affectedRows,0,null))
+        }
+    })
+
+})
+
+
+
 
 app.use((req,res)=>{
     res.json(functions.response('atenção',
